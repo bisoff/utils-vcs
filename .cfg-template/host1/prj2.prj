@@ -1,0 +1,3 @@
+path=C:\path\to\prj
+type=git
+remote=  # empty means current

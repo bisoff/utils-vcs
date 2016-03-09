@@ -1,0 +1,6 @@
+#!/bin/bash
+utility_path=$(echo "`dirname \"$0\"`")
+
+# get host
+# get prj list
+# echo prj-state
