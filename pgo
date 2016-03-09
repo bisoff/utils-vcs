@@ -1,7 +1,22 @@
 #!/bin/bash
-# . pgo <prj>
+# . pgo <prj> <list>
 
 utility_path=$(echo "`dirname \"$0\"`")
+
+prj="$1"
+[[ "$1" == "" ]] && echo "[GO TO PROJECT] prj name is missed !"
+
 # get set of prj (if $1 == "" then default)
+host="$(cat $utility_path/.cfg/default.cfg | sed -E -n "s/^host=([^#]*)/\1/p")" # host alias
+echo host:$host
+
+prjset=$1
+if [[ "$prjset" == "" ]]; then
+	prjset="$(cat $utility_path/.cfg/default.cfg | sed -E -n "s/^default_list=([^#]*)/\1/p")"
+ fi
+cat $utility_path/.cfg/$prjset
+
 # find prj in list
+#find $utility_path/.cfg/
+# extract path
 # cd prj path
