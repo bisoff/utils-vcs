@@ -1,0 +1,11 @@
+#!/bin/bash
+# padd -n=<prj> -p=<path> -t=<type> -r=<remote> -s=<set>
+
+utility_path=$(echo "`dirname \"$0\"`")
+# shift loop
+# if $prj == "" then folder
+# if $path == "" then pwd
+# if $type == "" then git
+# if $remote == "" then current
+# if $set == "" then default
+# TODO: exit when not repo

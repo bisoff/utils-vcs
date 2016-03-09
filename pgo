@@ -1,0 +1,7 @@
+#!/bin/bash
+# . pgo <prj>
+
+utility_path=$(echo "`dirname \"$0\"`")
+# get set of prj (if $1 == "" then default)
+# find prj in list
+# cd prj path
