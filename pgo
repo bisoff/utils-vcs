@@ -1,22 +1,25 @@
 #!/bin/bash
-# . pgo <prj> <list>
+# . pgo <repo> <list>
 
-utility_path=$(echo "`dirname \"$0\"`")
+repo="$1"
+[[ "$repo" == "" ]] && echo "[GO TO PROJECT] repo name is missed !"
 
-prj="$1"
-[[ "$1" == "" ]] && echo "[GO TO PROJECT] prj name is missed !"
+utility_path=$(echo "`dirname \"$(which pgo))\"`")
 
-# get set of prj (if $1 == "" then default)
+# get host
 host="$(cat $utility_path/.cfg/default.cfg | sed -E -n "s/^host=([^#]*)/\1/p")" # host alias
-echo host:$host
+#echo host:$host
 
-prjset=$1
-if [[ "$prjset" == "" ]]; then
-	prjset="$(cat $utility_path/.cfg/default.cfg | sed -E -n "s/^default_list=([^#]*)/\1/p")"
+# get repo list
+repos=$1
+if [[ "$repos" == "" ]]; then
+	repos="$(cat $utility_path/.cfg/default.cfg | sed -E -n "s/^default_list=([^#]*)/\1/p")"
  fi
-cat $utility_path/.cfg/$prjset
 
 # find prj in list
-#find $utility_path/.cfg/
+# TODO: test $repo exists
 # extract path
-# cd prj path
+path="$(cat $utility_path/.cfg/$host/$repo | sed -E -n "s/^path=([^#]*)/\1/p")"
+# echo path: $path
+# TODO: test $path exists
+cd $path
