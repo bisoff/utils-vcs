@@ -2,17 +2,23 @@
 # plist <list>
 
 utility_path=$(echo "`dirname \"$0\"`")
+echo utility_path:$utility_path > log
 
 # get host
-host="$(cat $utility_path/.cfg/default.cfg | sed -E -n "s/^host=([^#]*)/\1/p")" # host alias
-#echo host:$host
+host="$(cat $utility_path/.cfg/default.cfg | sed -E -n "s/^host=([^#]*)/\1/p"  | tr -d '\r')" # host alias (with remove trailing new line came from windows)
+echo "host:$host" >> log
 
 # get prj list
 repos=$1
 if [[ "$repos" == "" ]]; then
-	repos="$(cat $utility_path/.cfg/default.cfg | sed -E -n "s/^default_list=([^#]*)/\1/p")"
+	repos="$(cat $utility_path/.cfg/default.cfg | sed -E -n "s/^default_list=([^#]*)/\1/p" | tr -d '\r')"
+	echo "repos:$repos" >> log
  fi
+#echo "1:$utility_path" >> log
+#echo "2:$utility_path/.cfg/$host" >> log
+echo "3:$utility_path/.cfg/$host/$repos" >> log
+echo "4:$utility_path/.cfg/$host/$repos.list" >> log
 
-cat "$utility_path/.cfg/$host/$repos.list"
+cat "$utility_path/.cfg/$host/$repos.list" 2>> log
 # TODO: echo path
 # TODO: echo repo-state
