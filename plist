@@ -1,24 +1,29 @@
-#!/bin/bash
+#!/bin/bash 
 # plist <list>
-
 utility_path=$(echo "`dirname \"$0\"`")
-echo utility_path:$utility_path > log
+#echo utility_path:$utility_path > log
 
 # get host
 host="$(cat $utility_path/.cfg/default.cfg | sed -E -n "s/^host=([^#]*)/\1/p"  | tr -d '\r')" # host alias (with remove trailing new line came from windows)
-echo "host:$host" >> log
+#echo "host:$host" >> log
 
 # get prj list
 repos=$1
 if [[ "$repos" == "" ]]; then
 	repos="$(cat $utility_path/.cfg/default.cfg | sed -E -n "s/^default_list=([^#]*)/\1/p" | tr -d '\r')"
-	echo "repos:$repos" >> log
+	#echo "repos:$repos" #>> log
+	#echo "file: $utility_path/.cfg/$host/$repos.list"
  fi
-#echo "1:$utility_path" >> log
-#echo "2:$utility_path/.cfg/$host" >> log
-echo "3:$utility_path/.cfg/$host/$repos" >> log
-echo "4:$utility_path/.cfg/$host/$repos.list" >> log
+#save=`pwd`
+for repo in $(cat $utility_path/.cfg/$host/$repos.list | tr -d '\r'); do 
+	#echo "cfg: $utility_path/.cfg/$host/$repo"
+	#cat $utility_path/.cfg/$host/$repo
+	path=`sed -E -n 's/^path=([^#]+).*/\1/p' $utility_path/.cfg/$host/$repo | tr -d '\r'` # sed -E -n 's/^path=([^#]+)/\1/p' /Users/a.bysov/prj/utils-vcs/.cfg/ok/ue
+	#echo "path: $path ----------------------"
+	#re="~(.*)"
+	#if [[ $path =~ $re ]]; then  path=${BASH_REMATCH[1]}; fi
+	# echo repo-state
+	# eval - http://stackoverflow.com/questions/11065077/eval-command-in-bash-and-its-typical-uses - тильда крэшит параметр для команд
+	(echo "$repo: $path"; eval cd "$path"; git status -s --untracked-files; echo )
+  done
 
-cat "$utility_path/.cfg/$host/$repos.list" 2>> log
-# TODO: echo path
-# TODO: echo repo-state
