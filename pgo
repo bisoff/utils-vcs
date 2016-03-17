@@ -7,19 +7,19 @@ repo="$1"
 utility_path=$(echo "`dirname \"$(which pgo))\"`")
 
 # get host
-host="$(cat $utility_path/.cfg/default.cfg | sed -E -n "s/^host=([^#]*)/\1/p")" # host alias
+host="$(cat $utility_path/.cfg/default.cfg | sed -E -n 's/^host=([^#]*)/\1/p' | tr -d '\r')" # host alias
 #echo host:$host
 
 # get repo list
 repos=$1
 if [[ "$repos" == "" ]]; then
-	repos="$(cat $utility_path/.cfg/default.cfg | sed -E -n "s/^default_list=([^#]*)/\1/p")"
+	repos="$(cat $utility_path/.cfg/default.cfg | sed -E -n 's/^default_list=([^#]*)/\1/p' | tr -d '\r')"
  fi
 
 # find prj in list
 # TODO: test $repo exists
 # extract path
-path="$(cat $utility_path/.cfg/$host/$repo | sed -E -n "s/^path=([^#]*)/\1/p")"
+path="$(cat $utility_path/.cfg/$host/$repo | sed -E -n 's/^path=([^#]*)/\1/p' | tr -d '\r')"
 # echo path: $path
 # TODO: test $path exists
-cd $path
+eval cd "$path"

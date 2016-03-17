@@ -4,7 +4,7 @@ utility_path=$(echo "`dirname \"$0\"`")
 #echo utility_path:$utility_path > log
 
 # get host
-host="$(cat $utility_path/.cfg/default.cfg | sed -E -n "s/^host=([^#]*)/\1/p"  | tr -d '\r')" # host alias (with remove trailing new line came from windows)
+host="$(cat $utility_path/.cfg/default.cfg | sed -E -n "s/^host=([^#]*)/\1/p" | tr -d '\r')" # host alias (with remove trailing new line came from windows)
 #echo "host:$host" >> log
 
 # get prj list
@@ -24,6 +24,6 @@ for repo in $(cat $utility_path/.cfg/$host/$repos.list | tr -d '\r'); do
 	#if [[ $path =~ $re ]]; then  path=${BASH_REMATCH[1]}; fi
 	# echo repo-state
 	# eval - http://stackoverflow.com/questions/11065077/eval-command-in-bash-and-its-typical-uses - тильда крэшит параметр для команд
-	(echo "$repo: $path"; eval cd "$path"; git status -s --untracked-files; echo )
+	(echo "$repo: $path"; eval cd "$path"; git status -s --untracked-files; echo ) # тильда крэшит параметр для команд
   done
 
