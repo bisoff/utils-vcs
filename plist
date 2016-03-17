@@ -1,29 +1,18 @@
 #!/bin/bash 
 # plist <list>
-utility_path=$(echo "`dirname \"$0\"`")
-#echo utility_path:$utility_path > log
 
-# get host
-host="$(cat $utility_path/.cfg/default.cfg | sed -E -n "s/^host=([^#]*)/\1/p" | tr -d '\r')" # host alias (with remove trailing new line came from windows)
-#echo "host:$host" >> log
+. lib-prj
+home=$(home) # echo home: $home
+host=$(host) # echo host: $host
+repos=$1; repos=$(get_repos $repos) # echo repos: $repos
 
-# get prj list
-repos=$1
-if [[ "$repos" == "" ]]; then
-	repos="$(cat $utility_path/.cfg/default.cfg | sed -E -n "s/^default_list=([^#]*)/\1/p" | tr -d '\r')"
-	#echo "repos:$repos" #>> log
-	#echo "file: $utility_path/.cfg/$host/$repos.list"
- fi
-#save=`pwd`
-for repo in $(cat $utility_path/.cfg/$host/$repos.list | tr -d '\r'); do 
-	#echo "cfg: $utility_path/.cfg/$host/$repo"
-	#cat $utility_path/.cfg/$host/$repo
-	path=`sed -E -n 's/^path=([^#]+).*/\1/p' $utility_path/.cfg/$host/$repo | tr -d '\r'` # sed -E -n 's/^path=([^#]+)/\1/p' /Users/a.bysov/prj/utils-vcs/.cfg/ok/ue
-	#echo "path: $path ----------------------"
-	#re="~(.*)"
-	#if [[ $path =~ $re ]]; then  path=${BASH_REMATCH[1]}; fi
-	# echo repo-state
+for repo in $(cat $home/.cfg/$host/$repos.list | tr -d '\r'); do 
+	path=`sed -E -n 's/^path=([^#]+).*/\1/p' $home/.cfg/$host/$repo | tr -d '\r'` # sed -E -n 's/^path=([^#]+)/\1/p' /Users/a.bysov/prj/utils-vcs/.cfg/ok/ue
 	# eval - http://stackoverflow.com/questions/11065077/eval-command-in-bash-and-its-typical-uses - тильда крэшит параметр для команд
-	(echo "$repo: $path"; eval cd "$path"; git status -s --untracked-files; echo ) # тильда крэшит параметр для команд
+	(	echo "$repo: $path"; \
+		eval cd "$path"; \
+		git status -s --untracked-files; \
+		echo \
+	) # тильда крэшит параметр для команд
   done
 

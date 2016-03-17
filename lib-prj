@@ -1,0 +1,24 @@
+#!/bin/bash
+
+home() {
+	local me=`basename "$0"`
+	local utility_path=$(echo "`dirname \"$(which $me))\"`")
+	echo $utility_path # return value
+}
+
+host () {
+	local host="$(cat $(home)/.cfg/default.cfg | sed -E -n 's/^host=([^#]*)/\1/p' | tr -d '\r')" # host alias (with remove trailing new line came from windows)
+	echo $host # return value
+}
+
+get_repos () {
+	local repos=$1
+	if [[ "$repos" == "" ]]; then
+		repos="$(cat $(home)/.cfg/default.cfg | sed -E -n 's/^default_list=([^#]*)/\1/p' | tr -d '\r')"
+	 fi
+	echo "$repos" # return value
+	}
+
+
+ # тильда в пути - крэшит параметр для команд (cd ls ..)
+ # eval - http://stackoverflow.com/questions/11065077/eval-command-in-bash-and-its-typical-uses 

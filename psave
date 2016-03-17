@@ -1,0 +1,33 @@
+#!/bin/bash
+# psave <repo> <msg> # save repo (add/commit/push)
+
+# test 1st param - repo name
+repo=$1
+msg=$2
+
+. lib-prj
+home=$(home) 			# echo home: $home
+host=$(host) 			# echo host: $host
+repos=$(get_repos $repos) 	# echo repos: $repos  # get default repos  
+
+# find prj file
+curr_path=$(pwd) # echo cur_path:$curr_path
+for repo_loop in $(cat $home/.cfg/$host/$repos.list | tr -d '\r'); do 
+	#echo repo_loop:$repo_loop
+	if [[ "$repo_loop" == "$repo" || "$repo" == "" ]]; then
+		prj_path=`sed -E -n 's/^path=([^# ]+).*/\1/p' $home/.cfg/$host/$repo_loop | tr -d '\r'` # sed -E -n 's/^path=([^#]+)/\1/p' /Users/a.bysov/prj/utils-vcs/.cfg/ok/ue
+		prj_path=$(eval dirname "$prj_path/.") # echo prj_path:$prj_path 	# remove tilda for path compare
+		[[ "$prj_path" ==  "$curr_path" ]] && repo=$repo_loop # echo
+	  fi
+	# TODO: get prj vcs_type (svn, git)
+	# TODO: get prj remote
+  done
+[[ "$repo" == "" ]] && echo "[SAVE PROJECT] repo name is missed  and  not found by current path !"
+
+# TODO: test uncommited (untracked, changed, deleted, staged)
+
+# save prj
+(	echo "$repo: $prj_path"; \
+	eval cd "$prj_path"; \
+	gok "$msg")
+

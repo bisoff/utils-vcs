@@ -1,25 +1,24 @@
 #!/bin/bash
-# . pgo <repo> <list>
+# . pgo <repo> <in_list?>
 
-repo="$1"
-[[ "$repo" == "" ]] && echo "[GO TO PROJECT] repo name is missed !"
+. lib-prj
 
-utility_path=$(echo "`dirname \"$(which pgo))\"`")
+# test 1st param - repo name
+p_repo="$1"
+[[ "$p_repo" == "" ]] && echo "[GO TO PROJECT] repo name is missed !"
 
-# get host
-host="$(cat $utility_path/.cfg/default.cfg | sed -E -n 's/^host=([^#]*)/\1/p' | tr -d '\r')" # host alias
-#echo host:$host
+home=$(home) # echo home: $home
+host=$(host) # echo host: $host
+repos=$1; repos=$(get_repos $repos) # echo repos: $repos
 
-# get repo list
-repos=$1
-if [[ "$repos" == "" ]]; then
-	repos="$(cat $utility_path/.cfg/default.cfg | sed -E -n 's/^default_list=([^#]*)/\1/p' | tr -d '\r')"
- fi
 
-# find prj in list
-# TODO: test $repo exists
-# extract path
-path="$(cat $utility_path/.cfg/$host/$repo | sed -E -n 's/^path=([^#]*)/\1/p' | tr -d '\r')"
-# echo path: $path
-# TODO: test $path exists
+for repo_loop in $(cat $home/.cfg/$host/$repos.list | tr -d '\r'); do 
+	repo_path=`sed -E -n 's/^path=([^#]+).*/\1/p' $home/.cfg/$host/$repo_loop | tr -d '\r'`
+  done
+
+# extract path of repo
+repo_path="$(sed -E -n 's/^path=([^#]*)/\1/p' $home/.cfg/$host/$p_repo | tr -d '\r')" # echo repo_path: $repo_path
+
+# go to prj
+# ??TODO: test $path exists
 eval cd "$path"
