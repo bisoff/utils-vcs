@@ -8,11 +8,11 @@ repos=$1; repos=$(get_repos $repos) # echo repos: $repos
 
 for repo in $(cat $home/.cfg/$host/$repos.list | tr -d '\r'); do 
 	path=`sed -E -n 's/^path=([^#]+).*/\1/p' $home/.cfg/$host/$repo | tr -d '\r'` # sed -E -n 's/^path=([^#]+)/\1/p' /Users/a.bysov/prj/utils-vcs/.cfg/ok/ue
-	# eval - http://stackoverflow.com/questions/11065077/eval-command-in-bash-and-its-typical-uses - тильда крэшит параметр для команд
+	
 	(	echo "$repo: $path"; \
 		eval cd "$path"; \
 		git status -s --untracked-files; \
 		echo \
-	) # тильда крэшит параметр для команд
+	)
   done
 

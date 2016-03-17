@@ -20,5 +20,5 @@ get_repos () {
 	}
 
 
- # тильда в пути - крэшит параметр для команд (cd ls ..)
+ # тильда в пути в переменной - крэшит параметр для команд (cd ls ..)
  # eval - http://stackoverflow.com/questions/11065077/eval-command-in-bash-and-its-typical-uses 
