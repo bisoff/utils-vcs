@@ -1,14 +1,13 @@
-#!/bin/bash
-# psave <prj> <msg> # save prj-repo (add/commit/push)
+#!/bin/bash 
+# pstate <prj>
 
-# test 1st param - repo name
 repo=$1
-msg=$2
 
 . lib-prj
-home=$(home) 			# echo home: $home
-host=$(host) 			# echo host: $host
-default_repos=$(get_repos) 	# echo default_repos: $default_repos  # get default repos  
+home=$(home) # echo home: $home
+host=$(host) # echo host: $host
+default_repos=$(get_repos) #echo default_repos: $default_repos  #repos=$1; 
+
 
 # find prj file
 curr_path=$(pwd) # echo cur_path:$curr_path
@@ -22,14 +21,11 @@ for repo_loop in $(cat $home/.cfg/$host/$default_repos.list | tr -d '\r'); do
 	# TODO: get prj vcs_type (svn, git)
 	# TODO: get prj remote
   done
-[[ "$repo" == "" ]] && echo "[SAVE PROJECT] repo name is missed  and  not found by current path !"
+[[ "$repo" == "" ]] && echo "[PROJECT STATUS] repo name is missed  and  not found by current path !"
 
-# TODO: test uncommited (untracked, changed, deleted, staged)
-
-# save prj
 ( \
 echo "$repo: $prj_path"; \
 eval cd "$prj_path"; \
-gok "$msg" \
+gis \
 )
 
