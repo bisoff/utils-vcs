@@ -4,12 +4,12 @@ home() {
 	local me=`basename "$0"`
 	local utility_path=$(echo "`dirname \"$(which $me))\"`")
 	echo $utility_path # return value
-}
+	}
 
 host () {
 	local host="$(cat $(home)/.cfg/default.cfg | sed -E -n 's/^host=([^#]*)/\1/p' | tr -d '\r')" # host alias (with remove trailing new line came from windows)
 	echo $host # return value
-}
+	}
 
 get_repos () {
 	local repos=$1
@@ -19,6 +19,6 @@ get_repos () {
 	echo "$repos" # return value
 	}
 
-
- # тильда в пути в переменной - крэшит параметр для команд (cd ls ..)
- # eval - http://stackoverflow.com/questions/11065077/eval-command-in-bash-and-its-typical-uses 
+# тильда в пути в переменной - крэшит параметр для команд (cd ls ..)
+	# eval - http://stackoverflow.com/questions/11065077/eval-command-in-bash-and-its-typical-uses 
+	# re="~(.*)"; if [[ $path =~ $re ]]; then  path=${BASH_REMATCH[1]}; fi; cd $HOME$path
