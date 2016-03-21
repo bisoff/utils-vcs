@@ -3,19 +3,27 @@
 # padd -n=<prj> -p=<path> -t=<type> -r=<remote> -s=<set>
 
 prj=$1
-[[ "$prj" == "" ]] && echo "[PROJECT ADD] prj name is missed !"
+[[ "$prj" == "" ]] && echo "[PROJECT ADD] prj name is missed !" && exit
+list=$2
 
-curr_path=$(pwd) # echo cur_path:$curr_path
+curr_path=$(pwd) #; echo cur_path:$curr_path
 # TODO: replace $HOME to ~
-
+	
 # TODO: detect repo type (git/svn/hg - .git foder / .svn folder? / ..)
 # TODO: exit when curr_path not repo
 
 . lib-prj
 home=$(home) # echo home: $home
 host=$(host) # echo host: $host
-default_prj_list=$(get_repos).list 
 
+if [[ "$list" == "" ]]; then
+	prj_list=$(get_repos).list 
+  else
+  	prj_list=$list.list 
+  fi
+#echo "prj_list: $prj_list"
+#exit
+	
 prj_file=$home/.cfg/$host/$prj
 [[ -f $prj_file ]] && echo "[PROJECT ADD] Project already exists" && exit
 
@@ -25,7 +33,7 @@ echo "remote=" 		>> $prj_file
 
 # TODO: test prj in list
 # TODO: detect tail CR and don't append \n
-echo -e "\n$prj" >> $home/.cfg/$host/$default_prj_list
+echo -e "\n$prj" >> $home/.cfg/$host/$prj_list
 # TODO: if file exists but absenr in default list then add
 
 # shift loop

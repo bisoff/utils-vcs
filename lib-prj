@@ -1,9 +1,11 @@
 #!/bin/bash
 
 home() {
-	local me=`basename "$0"`
-	local utility_path=$(echo "`dirname \"$(which $me))\"`")
-	echo $utility_path # return value
+	#local me=`basename "$0"`
+	dirname ${BASH_SOURCE[0]}
+	#local me=`dirname ${BASH_SOURCE[0]}`
+	#local utility_path=$(echo "`dirname \"$(which $me))\"`")
+	#echo $utility_path # return value
 	}
 
 host () {
@@ -18,7 +20,26 @@ get_repos () {
 	 fi
 	echo "$repos" # return value
 	}
-
+find_prj () {
+	local path=$1
+	local prj=$2
+	[[ "$path" == "" ]] && echo "[LIB: FIND PROJECT] path for project is missed !" 1>&2 && return
+	[[ "$prj" == "" ]] && echo "[LIB: FIND PROJECT] project name is missed !" 1>&2 && return
+	#echo "path:$path"
+	#echo "prj:$prj"
+	(
+	cd $path
+	#pwd
+	#find . -type f ! -name "*.*" -maxdepth 1
+	for prj_loop in $(find . -type f ! -name "*.*" -maxdepth 1 | sed 's/^\.\///' ); do  #| tr -d '\r'
+		#echo "prj_loop: $prj_loop"
+		if [[ "$prj" == "$prj_loop" ]]; then
+			echo $prj_loop
+		  fi
+		#repo_path=`sed -E -n 's/^path=([^#]+).*/\1/p' $home/.cfg/$host/$repo_loop | tr -d '\r'`
+	  done
+	)
+  }
 # тильда в пути в переменной - крэшит параметр для команд (cd ls ..)
 	# eval - http://stackoverflow.com/questions/11065077/eval-command-in-bash-and-its-typical-uses 
 	# re="~(.*)"; if [[ $path =~ $re ]]; then  path=${BASH_REMATCH[1]}; fi; cd $HOME$path
