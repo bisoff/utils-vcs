@@ -2,13 +2,27 @@
 # psave <prj> <msg> # save prj-repo (add/commit/push)
 
 # test 1st param - repo name
-prj=$1
-msg=$2
+#list=$1
+#msg=$2
+
 
 . lib-prj
 home=$(home) 			# echo home: $home
 host=$(host) 			# echo host: $host
-#default_repos=$(get_repos) 	# echo default_repos: $default_repos  # get default repos  
+default_repos=$(get_repos) 	# echo default_repos: $default_repos  # get default repos  
+
+root="$home/.cfg/$host" #echo "root:$root"
+(
+cd $root
+#pwd
+for prj_loop in $(find . -type f ! -name "*.*" -maxdepth 1 | sed 's/^\.\///' ); do  
+	prj_path=`eval echo $(sed -E -n 's/^path=([^#]+).*/\1/p' $home/.cfg/$host/$prj_loop | tr -d '\r')`
+	#echo "$prj_loop: $prj_path" 1>&2
+	if [[ "$path" == "$prj_path" ]]; then
+		echo $prj_loop
+	  fi
+  done
+)
 
 if [[ "$prj" == "" ]]; then 
 	curr_path=`eval echo $(pwd)` #; echo cur_path:$curr_path
@@ -16,12 +30,12 @@ if [[ "$prj" == "" ]]; then
 	[[ "$prj_name" == "" ]] && echo "[SAVE PROJECT] project name is missed  and  not found by 'current path' in $home/.cfg/$host !" && exit
 	# save prj
 	echo "SAVING $prj_name: $curr_path"
-	gok 
+	gok
 	exit
   fi
 
 # find prj file by current path
-prj_path=$(find_path_by_name "$home/.cfg/$host" $curr_path $prj)
+prj_path=$(find_path_by_name "$home/.cfg/$host" $curr_path $prj))
 # TODO: get prj vcs_type (svn, git)
 # TODO: get prj remote
 ( # to return current path

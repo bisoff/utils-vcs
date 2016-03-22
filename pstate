@@ -1,31 +1,28 @@
 #!/bin/bash 
 # pstate <prj>
 
-repo=$1
+prj=$1
 
 . lib-prj
 home=$(home) # echo home: $home
 host=$(host) # echo host: $host
-default_repos=$(get_repos) #echo default_repos: $default_repos  #repos=$1; 
+#default_repos=$(get_repos) #echo default_repos: $default_repos  #repos=$1; 
 
+if [[ "$prj" == "" ]]; then 
+	curr_path=`eval echo $(pwd)` #; echo cur_path:$curr_path
+	prj_name=$(find_prj_by_path "$home/.cfg/$host" $curr_path) #; echo prj_name: $prj_name
+	[[ "$prj_name" == "" ]] && echo "[SAVE PROJECT] project name is missed  and  not found by 'current path' in $home/.cfg/$host !" && exit
+	# save prj
+	gis
+	exit
+  fi
 
-# find prj file
-curr_path=$(pwd) # echo cur_path:$curr_path
-for repo_loop in $(cat $home/.cfg/$host/$default_repos.list | tr -d '\r'); do 
-	#echo repo_loop:$repo_loop
-	if [[ "$repo_loop" == "$repo" || "$repo" == "" ]]; then
-		prj_path=`sed -E -n 's/^path=([^# ]+).*/\1/p' $home/.cfg/$host/$repo_loop | tr -d '\r'` # sed -E -n 's/^path=([^#]+)/\1/p' /Users/a.bysov/prj/utils-vcs/.cfg/ok/ue
-		prj_path=$(eval dirname "$prj_path/.") # echo prj_path:$prj_path 	# remove tilda for path compare
-		[[ "$prj_path" ==  "$curr_path" ]] && repo=$repo_loop # echo
-	  fi
-	# TODO: get prj vcs_type (svn, git)
-	# TODO: get prj remote
-  done
-[[ "$repo" == "" ]] && echo "[PROJECT STATUS] repo name is missed  and  not found by current path !"
-
-( \
-echo "$repo: $prj_path"; \
-eval cd "$prj_path"; \
-gis \
+# find prj file by current path
+prj_path=$(find_path_by_name "$home/.cfg/$host" $curr_path $prj)
+# TODO: get prj vcs_type (svn, git)
+( # to return current path
+echo "$prj: $prj_path"
+eval cd "$prj_path"
+gis
 )
 
