@@ -1,50 +1,25 @@
 #!/bin/bash
-# psave <prj> <msg> # save prj-repo (add/commit/push)
+# psavall <list> <msg> # save every prj in list (add/commit/push)
 
-# test 1st param - repo name
-#list=$1
-#msg=$2
-
+list=$1
+msg=$2
 
 . lib-prj
 home=$(home) 			# echo home: $home
 host=$(host) 			# echo host: $host
-default_repos=$(get_repos) 	# echo default_repos: $default_repos  # get default repos  
+[[ "$list" == "." ]] && list="" # trik to save default
+[[ "$list" == "" ]] && list=$(get_repos)
+# echo list: $list  		# get default repos list
 
-root="$home/.cfg/$host" #echo "root:$root"
-(
-cd $root
-#pwd
-for prj_loop in $(find . -type f ! -name "*.*" -maxdepth 1 | sed 's/^\.\///' ); do  
-	prj_path=`eval echo $(sed -E -n 's/^path=([^#]+).*/\1/p' $home/.cfg/$host/$prj_loop | tr -d '\r')`
-	#echo "$prj_loop: $prj_path" 1>&2
-	if [[ "$path" == "$prj_path" ]]; then
-		echo $prj_loop
-	  fi
+for prj in $(cat $home/.cfg/$host/$list.list | tr -d '\r'); do 
+	path=`sed -E -n 's/^path=([^#]+).*/\1/p' $home/.cfg/$host/$prj | tr -d '\r'` # sed -E -n 's/^path=([^#]+)/\1/p' /Users/a.bysov/prj/utils-vcs/.cfg/ok/ue
+	(
+	echo "$prj: $path"
+	eval cd "$path"
+	gok "$msg"
+	echo
+	)
   done
-)
-
-if [[ "$prj" == "" ]]; then 
-	curr_path=`eval echo $(pwd)` #; echo cur_path:$curr_path
-	prj_name=$(find_prj_by_path "$home/.cfg/$host" $curr_path) #; echo prj_name: $prj_name
-	[[ "$prj_name" == "" ]] && echo "[SAVE PROJECT] project name is missed  and  not found by 'current path' in $home/.cfg/$host !" && exit
-	# save prj
-	echo "SAVING $prj_name: $curr_path"
-	gok
-	exit
-  fi
-
-# find prj file by current path
-prj_path=$(find_path_by_name "$home/.cfg/$host" $curr_path $prj))
-# TODO: get prj vcs_type (svn, git)
-# TODO: get prj remote
-( # to return current path
-echo "$prj: $prj_path"
-eval cd "$prj_path"
-gok "$msg" 
-)
-
-
 
 # TODO: test uncommited (untracked, changed, deleted, staged)
 
