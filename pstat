@@ -6,13 +6,19 @@ home=$(home) # echo home: $home
 host=$(host) # echo host: $host
 repos=$1; repos=$(get_repos $repos) # echo repos: $repos
 
-for repo in $(cat $home/.cfg/$host/$repos.list | tr -d '\r'); do 
-	path=`sed -E -n 's/^path=([^#]+).*/\1/p' $home/.cfg/$host/$repo | tr -d '\r'` # sed -E -n 's/^path=([^#]+)/\1/p' /Users/a.bysov/prj/utils-vcs/.cfg/ok/ue
+for prj in $(cat $home/.cfg/$host/$repos.list | tr -d '\r'); do 
+	path=`sed -E -n 's/^path=([^#]+).*/\1/p' $home/.cfg/$host/$prj | tr -d '\r'` # sed -E -n 's/^path=([^#]+)/\1/p' /Users/a.bysov/prj/utils-vcs/.cfg/ok/ue
 	
-	(	echo "$repo: $path"; \
-		eval cd "$path"; \
-		git status -s --untracked-files; \
-		echo \
+	(
+	eval cd "$path"
+	changes=$(gis | wc -l)	# echo changes: $changes
+	if [ $changes -eq 0 ]; then
+		echo -e "${grey}$prj: $path${norm}"
+	  else
+		echo -e "\n${grey_back} $prj: $path ${norm}"
+		git status -s --untracked-files
+		echo
+	  fi
 	)
   done
 

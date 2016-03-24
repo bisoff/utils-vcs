@@ -19,7 +19,7 @@ for prj in $(cat $home/.cfg/$host/$list.list | tr -d '\r'); do
 	if [ $changes -eq 0 ]; then
 		echo -e "${grey}$prj: $path${norm}"
 	  else
-		gok "$msg"
+		gok "$msg" # TODO: переделать на использование либы 
 		echo
 	  fi
 	#${red}none${norm}"
