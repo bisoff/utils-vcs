@@ -14,10 +14,16 @@ host=$(host) 			# echo host: $host
 for prj in $(cat $home/.cfg/$host/$list.list | tr -d '\r'); do 
 	path=`sed -E -n 's/^path=([^#]+).*/\1/p' $home/.cfg/$host/$prj | tr -d '\r'` # sed -E -n 's/^path=([^#]+)/\1/p' /Users/a.bysov/prj/utils-vcs/.cfg/ok/ue
 	(
-	echo "$prj: $path"
+	echo 
 	eval cd "$path"
-	gok "$msg"
+	changes=$(gis | wc -l)	# echo changes: $changes
+	if [ $changes -eq 0 ]; then
+		echo -e "${grey}$prj: $path{norm}"
+	  else
+		gok "$msg"
+	  fi
 	echo
+	#${red}none${norm}"
 	)
   done
 
