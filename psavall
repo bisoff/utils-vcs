@@ -20,8 +20,8 @@ for prj in $(cat $home/.cfg/$host/$list.list | tr -d '\r'); do
 		echo -e "${grey}$prj: $path${norm}"
 	  else
 		gok "$msg"
+		echo
 	  fi
-	echo
 	#${red}none${norm}"
 	)
   done
