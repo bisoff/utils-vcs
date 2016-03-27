@@ -30,7 +30,7 @@ find_prj () {
 	(
 	cd $root
 	#pwd
-	for prj_loop in $(find . -type f ! -name "*.*" -maxdepth 1 | sed 's/^\.\///' ); do  #| tr -d '\r'
+	for prj_loop in $(find .  -maxdepth 1 -type f ! -name "*.*" | sed 's/^\.\///' ); do  #| tr -d '\r'
 		#echo "prj_loop: $prj_loop"
 		if [[ "$prj" == "$prj_loop" ]]; then
 			echo $prj_loop
