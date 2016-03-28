@@ -35,3 +35,5 @@ git push -u bb master
 #try this:
 #git config --global credential.helper wincred # save pwd at windows pwd store
 #git config --global core.askpass /usr/libexec/git-core/git-gui--askpass #ask pwd if missed
+
+

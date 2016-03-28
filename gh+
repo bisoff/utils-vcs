@@ -27,7 +27,12 @@ echo "adding new repo remote URL  https://github.com/$GITUSER/${PWD##*/}.git ...
 git remote add gh https://github.com/$GITUSER/${PWD##*/}.git
 #git remote add origin ssh://git@bitbucket.org/$GITUSER/${PWD##*/}.git
 
-echo "git push -u gh --all..."
-git push -u gh --all # -u: upstream
-git push -u gh --tags
+#echo "git push -u gh --all..."
+echo "git push .."
+#git push -u gh --all # -u: upstream
+#git push -u gh --tags
+git push gh master
+git push gh --tags
 #git push origin -u
+
+#git remote add gh  https://github.com/bisoff/utils-vcs.git
