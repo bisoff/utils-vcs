@@ -19,7 +19,7 @@ git add -A .
 echo "Initial commit..."
 git commit -m "Initial commit"
 
-echo "...creating new remote repo on bitbucket with name '${PWD##*/}'"
+echo "...creating new remote repo on github with name '${PWD##*/}'"
 curl -u $GITUSER:$PASSWORD https://api.github.com/user/repos -k -d '{"name":"'${PWD##*/}'"}' -k -s | jq '.[] | .name + if .private then " - private" else "" end'
 #--data {"private":true} -s
 

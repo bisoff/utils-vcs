@@ -1,1 +1,1 @@
-#About
+load jq for your plaform and rename to jq - https://github.com/stedolan/jq/releases
