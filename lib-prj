@@ -54,7 +54,7 @@ find_prj_by_path () {
 	(
 	cd $root
 	#pwd
-	for prj_loop in $(find . -type f ! -name "*.*" -maxdepth 1 | sed 's/^\.\///' ); do  
+	for prj_loop in $(find . -maxdepth 1 -type f ! -name "*.*" | sed 's/^\.\///' ); do  
 		prj_path=`eval echo $(sed -E -n 's/^path=([^#]+).*/\1/p' $home/.cfg/$host/$prj_loop | tr -d '\r')`
 		#echo "$prj_loop: $prj_path" 1>&2
 		if [[ "$path" == "$prj_path" ]]; then
