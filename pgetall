@@ -15,16 +15,29 @@ for prj in $(cat $home/.cfg/$host/$list.list | tr -d '\r'); do
 	path=`sed -E -n 's/^path=([^#]+).*/\1/p' $home/.cfg/$host/$prj | tr -d '\r'` # sed -E -n 's/^path=([^#]+)/\1/p' /Users/a.bysov/prj/utils-vcs/.cfg/ok/ue
 	(
 	eval cd "$path"
-	git fetch
+
+	echo -e "\n${grey_back}$prj: $path${norm}"
 	changes=$(gis | wc -l)	# echo changes: $changes
+	need_to_pull=no
 	if [ $changes -eq 0 ]; then
-		echo -e "${grey}$prj: $path${norm}"
+		LOCAL=$(git rev-parse @)
+		REMOTE=$(git ls-remote 2>/dev/null | awk "/HEAD/ {print \$1}")
+		BASE=$(git merge-base @ @{u}) #echo LOCAL:$LOCAL REMOTE:$REMOTE BASE:$BASE
+		if [ $LOCAL = $REMOTE ]; then
+			true # echo "Up-to-date"
+		  elif [ $LOCAL = $BASE ]; then
+			need_to_pull=yes
+		  elif [ $REMOTE = $BASE ]; then
+			echo -e "${yellow}NEED TO PUSH !${norm}" 
+		  else
+			echo -e "${red_bright}DIVERGED ! NEED TO PUSH AFTER ${norm}" #
+			need_to_pull=yes
+		  fi
+		[ "$need_to_pull" == "yes" ] && gul "$msg" # TODO: переделать на использование либы 
 	  else
-		echo -e "\n${grey_back}$prj: $path${norm}"
-		gul "$msg" # TODO: переделать на использование либы 
-		echo
+		echo -e "${yellow}NEED TO COMMIT !${norm}" 
+	  	gis
 	  fi
-	#${red}none${norm}"
 	)
   done
 

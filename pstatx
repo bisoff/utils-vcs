@@ -25,16 +25,14 @@ for prj in $(cat $home/.cfg/$host/$repos.list | tr -d '\r'); do
 	BASE=$(git merge-base @ @{u})
 	#echo LOCAL:$LOCAL REMOTE:$REMOTE BASE:$BASE
 	if [ $LOCAL = $REMOTE ]; then
-	    #echo "Up-to-date"
-	    true
-	elif [ $LOCAL = $BASE ]; then
-	    echo -e "${yellow} NEED TO PULL !${norm}"
-	elif [ $REMOTE = $BASE ]; then
-	    #echo "Need to push"
-	    true
-	else
-	    echo -e "${red_bright}DIVERGED !!${norm}"
-	fi
+		true #echo "Up-to-date"
+	  elif [ $LOCAL = $BASE ]; then
+		echo -e "${yellow} NEED TO PULL !${norm}"
+	  elif [ $REMOTE = $BASE ]; then
+		true #echo "Need to push"
+	  else
+		echo -e "${red_bright}DIVERGED !!${norm}"
+	  fi
 	#[ $changes -ne 0 ] && echo
 	)
   done
