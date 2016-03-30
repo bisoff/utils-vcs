@@ -20,7 +20,8 @@ for prj in $(cat $home/.cfg/$host/$repos.list | tr -d '\r'); do
 		git status -s --untracked-files
 	  fi
 	LOCAL=$(git rev-parse @)
-	REMOTE=$(git rev-parse @{u}) # from local
+	#curr_remote=$(current_remote)
+	REMOTE=$(git ls-remote 2>/dev/null | awk "/HEAD/ {print \$1}")
 	BASE=$(git merge-base @ @{u})
 	#echo LOCAL:$LOCAL REMOTE:$REMOTE BASE:$BASE
 	if [ $LOCAL = $REMOTE ]; then
