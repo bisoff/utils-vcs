@@ -17,8 +17,24 @@ for prj in $(cat $home/.cfg/$host/$repos.list | tr -d '\r'); do
 	  else
 		echo -e "\n${grey_back} $prj: $path ${norm}"
 		git status -s --untracked-files
-		echo
 	  fi
+	git fetch
+	LOCAL=$(git rev-parse @)
+	REMOTE=$(git rev-parse @{u})
+	BASE=$(git merge-base @ @{u})
+	#echo LOCAL:$LOCAL REMOTE:$REMOTE BASE:$BASE
+	if [ $LOCAL = $REMOTE ]; then
+	    #echo "Up-to-date"
+	    true
+	elif [ $LOCAL = $BASE ]; then
+	    echo -e "+${yellow}+ Need to pull !${norm}"
+	elif [ $REMOTE = $BASE ]; then
+	    #echo "Need to push"
+	    true
+	else
+	    echo -e "${red}Diverged !!${norm}"
+	fi
+	[ $changes -ne 0 ] && echo
 	)
   done
 

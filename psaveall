@@ -16,10 +16,8 @@ for prj in $(cat $home/.cfg/$host/$list.list | tr -d '\r'); do
 	(
 	eval cd "$path"
 	changes=$(gis | wc -l)	# echo changes: $changes
-	if [ $changes -eq 0 ]; then
-		echo -e "${grey}$prj: $path${norm}"
-	  else
-		echo -e "\n${grey_back}$prj: $path${norm}"
+	echo -e "\n${grey_back}$prj: $path${norm}"
+	if [ $changes -ne 0 ]; then
 		gok "$msg" # TODO: переделать на использование либы 
 		echo
 	  fi
