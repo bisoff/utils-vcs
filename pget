@@ -27,7 +27,7 @@ prj_path=$(find_path_by_name "$home/.cfg/$host" $curr_path $prj)
 ( # to return current path
 echo "$prj: $prj_path"
 eval cd "$prj_path"
-gok "$msg" 
+gul "$msg" 
 )
 
 
