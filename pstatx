@@ -15,7 +15,7 @@ for prj in $(cat $home/.cfg/$host/$repos.list | tr -d '\r'); do
 	changes=$(gis | wc -l)	# echo changes: $changes
 	#	echo -e "${grey}$prj: $path${norm}"
 	#  else
-	echo -e "\n${grey_back} $prj: $path ${norm}"
+	echo -e "\n$grey_back $prj: $path ${norm}"
 	if [ $changes -ne 0 ]; then
 		git status -s --untracked-files
 	  fi
@@ -28,12 +28,12 @@ for prj in $(cat $home/.cfg/$host/$repos.list | tr -d '\r'); do
 	    #echo "Up-to-date"
 	    true
 	elif [ $LOCAL = $BASE ]; then
-	    echo -e "${yellow} Need to pull !${norm}"
+	    echo -e "${yellow} NEED TO PULL !${norm}"
 	elif [ $REMOTE = $BASE ]; then
 	    #echo "Need to push"
 	    true
 	else
-	    echo -e "${red}Diverged !!${norm}"
+	    echo -e "${red_bright}DIVERGED !!${norm}"
 	fi
 	#[ $changes -ne 0 ] && echo
 	)
