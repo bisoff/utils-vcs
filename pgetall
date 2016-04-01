@@ -17,9 +17,10 @@ for prj in $(cat $home/.cfg/$host/$list.list | tr -d '\r'); do
 	eval cd "$path"
 
 	echo -e "\n${grey_back}$prj: $path${norm}"
-	changes=$(gis 2> /dev/null | wc -l) #; echo "changes: -$changes-"
+	changes=$(gis | wc -l) #; echo "changes: -$changes-" 2> /dev/null 
 	need_to_pull=no
 	if [ $changes -eq 0  -o  "$changes" == "" ]; then
+
 		LOCAL=$(git rev-parse @)
 		REMOTE=$(git ls-remote 2>/dev/null | awk "/HEAD/ {print \$1}")
 		BASE=$(git merge-base @ @{u}) #echo LOCAL:$LOCAL REMOTE:$REMOTE BASE:$BASE
