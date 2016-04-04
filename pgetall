@@ -22,7 +22,7 @@ for prj in $(cat $home/.cfg/$host/$list.list | tr -d '\r'); do
 	if [ $changes -eq 0  -o  "$changes" == "" ]; then
 
 		LOCAL=$(git rev-parse @)
-		REMOTE=$(git ls-remote 2>/dev/null | awk "/HEAD/ {print \$1}")
+		REMOTE=$(git ls-remote 2>/dev/null | awk "/HEAD/ {print \$1}") # on remote site
 		BASE=$(git merge-base @ @{u}) #echo LOCAL:$LOCAL REMOTE:$REMOTE BASE:$BASE
 		if [ $LOCAL = $REMOTE ]; then
 			true # echo "Up-to-date"

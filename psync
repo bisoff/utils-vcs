@@ -1,5 +1,5 @@
 #!/bin/bash
-# psave <prj> <msg> # save prj-repo (add/commit/push)
+# psync <prj> <msg> # a) fix prj when need (add/commit) 2) pull when need  3) push when need
 
 # test 1st param - repo name
 prj=$1
@@ -8,15 +8,14 @@ msg=$2
 . lib-prj
 home=$(home) 			# echo home: $home
 host=$(host) 			# echo host: $host
-#default_repos=$(get_repos) 	# echo default_repos: $default_repos  # get default repos  
 
 if [[ "$prj" == "" ]]; then 
 	curr_path=`eval echo $(pwd)` #; echo cur_path:$curr_path
 	prj_name=$(find_prj_by_path "$home/.cfg/$host" $curr_path) #; echo prj_name: $prj_name
-	[[ "$prj_name" == "" ]] && echo "[SAVE PROJECT] project name is missed  and  not found by 'current path' in $home/.cfg/$host !" && exit
-	# save prj
+	[[ "$prj_name" == "" ]] && echo "[PROJECT SYNC] project name is missed  or  not found by 'path=' in $home/.cfg/$host !" && exit
+
 	echo "SAVING $prj_name: $curr_path"
-	gok
+	gul
 	exit
   fi
 
@@ -27,7 +26,7 @@ prj_path=$(find_path_by_name "$home/.cfg/$host" $curr_path $prj)
 ( # to return current path
 echo "$prj: $prj_path"
 eval cd "$prj_path"
-gok "$msg" 
+gul "$msg" 
 )
 
 

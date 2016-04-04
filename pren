@@ -1,0 +1,45 @@
+#!/bin/bash
+# pren <prj> [<list>] 		# to curr_path
+# pren -n=<prj> -p=<path> -t=<type> -r=<remote> -s=<set>
+
+prj=$1
+[[ "$prj" == "" ]] && echo "[PROJECT RENAME] prj name is missed !" && exit
+list=$2
+
+#new_path=$(pwd) #; echo new_path: $new_path
+new_path="${PWD/#$HOME/~}" # replace $HOME to ~
+
+# TODO: detect repo type (git/svn/hg - .git foder / .svn folder? / ..) and exit if new_path not a repo 
+
+. lib-prj
+home=$(home) # echo home: $home
+host=$(host) # echo host: $host
+
+if [[ "$list" == "" ]]; then
+	prj_list=$(get_repos).list 
+  else
+  	prj_list=$list.list 
+  fi
+# echo "prj_list: $prj_list"
+# TODO: test prj in list
+#exit
+	
+prj_file=$home/.cfg/$host/$prj
+[[ ! -f $prj_file ]] && echo "[PROJECT RENAME] Project is absent" && exit
+
+curr_path=`sed -E -n 's/^path=([^#]+).*/\1/p' $home/.cfg/$host/$prj | tr -d '\r'` ; echo curr_path: $curr_path
+echo "path=$new_path" 	>  $prj_file
+echo "type=git" 	>> $prj_file
+echo "remote=" 		>> $prj_file
+
+plist
+
+# TODO: if file exists but absenr in default list then add
+
+# shift loop
+# if $prj == "" then folder
+# if $path == "" then pwd
+# if $type == "" then git
+# if $remote == "" then current
+# if $set == "" then default
+
