@@ -24,4 +24,3 @@ project_path="$(sed -E -n 's/^path=([^#]*)/\1/p' $home/.cfg/$host/$prj_repo | tr
 echo "go to: $project_path"
 # ??TODO: test $path exists
 eval cd "$project_path"
-renametab $(printf '%s\n' "${PWD##*/}")
