@@ -8,7 +8,7 @@ host=$(host) # echo host: $host
 repos=$1; repos=$(get_repos $repos) # echo repos: $repos
 
 for prj in $(cat $home/.cfg/$host/$repos.list | tr -d '\r'); do 
-	path=`sed -E -n 's/^path=([^#]+).*/\1/p' $home/.cfg/$host/$prj | tr -d '\r'` # sed -E -n 's/^path=([^#]+)/\1/p' /Users/a.bysov/prj/utils-vcs/.cfg/ok/ue
+	path=`sed -E -n 's/^path=([^#]+).*/\1/p' $home/.cfg/$host/$prj | tr -d '\r' | sort` # sed -E -n 's/^path=([^#]+)/\1/p' /Users/a.bysov/prj/utils-vcs/.cfg/ok/ue
 	
 	(
 	eval cd "$path"
