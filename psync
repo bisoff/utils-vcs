@@ -9,24 +9,29 @@ msg=$2
 home=$(home) 			# echo home: $home
 host=$(host) 			# echo host: $host
 
-if [[ "$prj" == "" ]]; then 
-	curr_path=`eval echo $(pwd)` #; echo cur_path:$curr_path
+if [[ "$prj" != "" ]]; then 
+  else
+	curr_path=$(pwd) #; echo cur_path:$curr_path # replace 
 	prj_name=$(find_prj_by_path "$home/.cfg/$host" $curr_path) #; echo prj_name: $prj_name
-	[[ "$prj_name" == "" ]] && echo "[PROJECT SYNC] project name is missed  or  not found by 'path=' in $home/.cfg/$host !" && exit
-
-	echo "SAVING $prj_name: $curr_path"
-	gul
-	exit
+	[[ "$prj_name" == "" ]] && echo "[PROJECT SYNC] project name is missed  and  not found by 'path=' in $home/.cfg/$host !" && exit
   fi
 
-# find prj file by current path
-prj_path=$(find_path_by_name "$home/.cfg/$host" $curr_path $prj)
 # TODO: get prj vcs_type (svn, git)
 # TODO: get prj remote
+
 ( # to return current path
 echo "$prj: $prj_path"
 eval cd "$prj_path"
-gul "$msg" 
+echo "prj_name: $prj_name"
+# fix prj when need (add/commit) 
+l "$msg" 
+
+# pull when need  
+gul
+
+# push when need
+gus
+exit
 )
 
 
