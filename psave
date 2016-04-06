@@ -22,6 +22,7 @@ if [[ "$prj" == "" ]]; then
 
 # find prj file by current path
 prj_path=$(find_path_by_name "$home/.cfg/$host" $curr_path $prj)
+[[ "$prj_path" == "" ]] && echo  "[SAVE PROJECT] project file '$home/.cfg/$host/$prj' not found !" && exit
 # TODO: get prj vcs_type (svn, git)
 # TODO: get prj remote
 ( # to return current path
