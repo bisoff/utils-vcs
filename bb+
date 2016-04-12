@@ -7,11 +7,28 @@
 echo -n Enter password for $GITUSER: && read -s PASSWORD && echo
 
 echo "git init..."
-git init
+if [ -d ".git" ]; then
+	echo "Already exist"
+  else
+	git init
+  fi
 
-#TODO: IF not exists any file
-echo "#About" > readme.md
-echo "LGPL3" > license
+echo "add readme.md..."
+if [ -f "readme.md" ]; then
+	echo "Already exist"
+  else
+	echo "#About" > readme.md
+  fi
+
+echo "add license..."
+if [ -f "license" ]; then
+	echo "Already exist"
+  else
+	echo "LGPL3" > license
+	# TODO: host
+	# TODO: user (author)
+	# TODO: limits
+  fi
 
 echo "git add -A ..."
 git add -A .
