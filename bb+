@@ -24,7 +24,7 @@ echo "add license..."
 if [ -f "license" ]; then
 	echo "Already exist"
   else
-	echo "LGPL3" > license
+	echo "GPL3(LGPL)" > license
 	# TODO: host
 	# TODO: user (author)
 	# TODO: limits
