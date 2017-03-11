@@ -1,4 +1,5 @@
 #!/bin/sh
+# list repos
 [[ "$GITUSER" == "" ]] && echo "\$GITUSER not defined!" && exit
 
 echo -n Enter password for $GITUSER: && read -s PASSWORD && echo

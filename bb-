@@ -1,6 +1,5 @@
 #!/bin/sh
-# Makes a non git directory to a new private bitbucket repository with all files added to initial commit
-# Usage = enter your bitbucket username and password in the script
+# deletes remote repo
 
 [[ "$GITUSER" == "" ]] && echo "\$GITUSER not defined!" && exit
 

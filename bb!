@@ -1,6 +1,10 @@
 #!/bin/bash
-# Makes a non git directory to a new private bitbucket repository with all files added to initial commit
-# Usage = enter your bitbucket username and password in the script
+# clone repo (with name as directory) from your bitbucket 
+
+# Usage:
+#	cd <root dir of prj> # directory can't be under git control
+#	run the script
+#	enter bitbucket username and password
 
 [[ "$GITUSER" == "" ]] && echo "\$GITUSER not defined!" && exit
 
